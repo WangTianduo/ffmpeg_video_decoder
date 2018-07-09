@@ -68,13 +68,13 @@ int main(int argc, char* argv[])
 	int y_size;
 	int framecnt=0;
 	//FILE *in_file = fopen("src01_480x272.yuv", "rb");	//Input raw YUV data 
-	FILE *in_file = fopen("akiyo_qcif.yuv", "rb");   //Input raw YUV data
+	FILE *in_file = fopen("../resource/akiyo_qcif.yuv", "rb");   //Input raw YUV data
 	int in_w=176,in_h=144;                              //Input data's width and height
 	int framenum=300;                                   //Frames to encode
 	//const char* out_file = "src01.h264";              //Output Filepath 
 	//const char* out_file = "src01.ts";
 	//const char* out_file = "src01.hevc";
-	const char* out_file = "ds.h264";
+	const char* out_file = "../resource/ds.h264";
 
 	av_register_all();
 	//Method1.

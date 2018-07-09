@@ -11,7 +11,7 @@ CFLAGS += -w -g
 CFLAGS := $(shell pkg-config --cflags $(FFMPEG_LIBS)) $(CFLAGS)
 LDLIBS := $(shell pkg-config --libs $(FFMPEG_LIBS)) $(LDLIBS)
 
-EXAMPLES = main
+EXAMPLES = encode
 
 OBJS=$(addsuffix .o,$(EXAMPLES))
 
