@@ -54,7 +54,7 @@ int flush_encoder(AVFormatContext *fmt_ctx,unsigned int stream_index){
 	return ret;
 }
 
-int main(int argc, char* argv[])
+int encoder(char* src, char* dst)
 {
 	AVFormatContext* pFormatCtx;
 	AVOutputFormat* fmt;
@@ -67,28 +67,22 @@ int main(int argc, char* argv[])
 	int picture_size;
 	int y_size;
 	int framecnt=0;
-	//FILE *in_file = fopen("src01_480x272.yuv", "rb");	//Input raw YUV data 
-	FILE *in_file = fopen("../resource/akiyo_qcif.yuv", "rb");   //Input raw YUV data
-	int in_w=176,in_h=144;                              //Input data's width and height
-	int framenum=300;                                   //Frames to encode
-	//const char* out_file = "src01.h264";              //Output Filepath 
-	//const char* out_file = "src01.ts";
-	//const char* out_file = "src01.hevc";
-	const char* out_file = "../resource/ds.h264";
+
+	const char* i_file = src;
+	const char* out_file = dst;
+	
+	FILE *in_file = fopen(i_file, "rb");   
+
+	int in_w=176,in_h=144;                              
+	int framenum=300;                                   
 
 	av_register_all();
-	//Method1.
+	
 	pFormatCtx = avformat_alloc_context();
-	//Guess Format
+
 	fmt = av_guess_format(NULL, out_file, NULL);
 	pFormatCtx->oformat = fmt;
 	
-	//Method 2.
-	//avformat_alloc_output_context2(&pFormatCtx, NULL, NULL, out_file);
-	//fmt = pFormatCtx->oformat;
-
-
-	//Open output URL
 	if (avio_open(&pFormatCtx->pb,out_file, AVIO_FLAG_READ_WRITE) < 0){
 		printf("Failed to open output file! \n");
 		return -1;
@@ -115,10 +109,6 @@ int main(int argc, char* argv[])
 	pCodecCtx->time_base.num = 1;  
 	pCodecCtx->time_base.den = 25;  
 
-	//H264
-	//pCodecCtx->me_range = 16;
-	//pCodecCtx->max_qdiff = 4;
-	//pCodecCtx->qcompress = 0.6;
 	pCodecCtx->qmin = 10;
 	pCodecCtx->qmax = 51;
 
@@ -141,7 +131,7 @@ int main(int argc, char* argv[])
 
 	//Show some Information
 	av_dump_format(pFormatCtx, 0, out_file, 1);
-
+	
 	pCodec = avcodec_find_encoder(pCodecCtx->codec_id);
 	if (!pCodec){
 		printf("Can not find encoder! \n");
